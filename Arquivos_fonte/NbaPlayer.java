@@ -1,3 +1,5 @@
+import java.io.*;
+
 public class NbaPlayer {
     protected int id;
     protected String player_name;
@@ -64,7 +66,7 @@ public class NbaPlayer {
         this.player_height = player_height;
     }
 
-    public String createRegister(String line) {
+    public NbaPlayer(String line) {
         String[] info = line.split(",");
 
         this.id = Integer.parseInt(info[0]);
@@ -73,16 +75,41 @@ public class NbaPlayer {
         this.player_height = Float.parseFloat(info[4]);
         this.stats = this.setStats(info[12], info[13], info[14]); // 12,13,14
 
-        return null;
     }
 
-    public String setStats(String pts, String reb, String ast) {
-        String stats = pts + "," + reb + "," + ast;;
+    public byte[] toByteArray() throws Exception {  //cria o array de bytes com os dados
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        DataOutputStream dos = new DataOutputStream(baos);
+
+        dos.writeInt(this.id);
+        dos.writeUTF(this.player_name);
+        dos.writeUTF(this.team_abbreviation);
+        dos.writeUTF(this.stats);
+        dos.writeLong(this.insertion_date);
+        dos.writeFloat(this.player_height);
+
+        return baos.toByteArray();
+
+    }
+
+    private String setStats(String pts, String reb, String ast) {
+        String stats = pts + "," + reb + "," + ast;
+        
 
         return stats;
     }
 
-    public void fromByteArray(byte[] array) { // recebe o array de dados e instancia o objeto conforme esses dados
+    public void fromByteArray(byte[] array) throws Exception { // recebe o array de dados e instancia o objeto
+
+        ByteArrayInputStream bais = new ByteArrayInputStream(array);
+        DataInputStream dis = new DataInputStream(bais);
+
+        this.id = dis.readInt();
+        this.player_name = dis.readUTF();
+        this.team_abbreviation = dis.readUTF();
+        this.stats = dis.readUTF();
+        this.insertion_date = dis.readLong();
+        this.player_height = dis.readFloat();
 
     }
 
