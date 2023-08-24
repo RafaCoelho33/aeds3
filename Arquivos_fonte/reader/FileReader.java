@@ -1,4 +1,7 @@
+package reader;
+    
 import java.io.*;
+import models.NbaPlayer;
 
 class FileReader {
     public void readFromFile(String file_path) throws Exception

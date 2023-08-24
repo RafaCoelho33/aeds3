@@ -1,3 +1,5 @@
+package models;
+
 import java.io.*;
 
 public class NbaPlayer {
