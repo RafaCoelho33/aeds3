@@ -1,21 +1,21 @@
 package reader;
-    
+
 import java.io.*;
 import models.NbaPlayer;
 
 class FileReader {
-    public void readFromFile(String file_path) throws Exception
-    {
-    
-    File file = new File(file_path);
-    
-    RandomAccessFile raf = new RandomAccessFile(file, "r");
 
-        
-    
+    public FileReader() {
 
+    }
 
-    raf.close();
+    public void readFromFile(String file_path) throws Exception {       //metodo que le o arquivo csv e cria 
+
+        File file = new File(file_path);
+
+        RandomAccessFile raf = new RandomAccessFile(file, "r");
+
+        raf.close();
     }
 
     public static void main(String[] args) throws Exception {
