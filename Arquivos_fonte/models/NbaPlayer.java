@@ -9,7 +9,6 @@ public class NbaPlayer {
     protected String stats;
     protected long insertion_date;
     protected float player_height;
-    protected int size;
     
 
     public NbaPlayer(int id, String player_name, String team_abbreviation, String stats, long insertion_date,
@@ -20,7 +19,6 @@ public class NbaPlayer {
         this.stats = stats;
         this.insertion_date = insertion_date;
         this.player_height = player_height;
-        this.size = size;
     }
 
     public NbaPlayer(String line) {
@@ -31,7 +29,6 @@ public class NbaPlayer {
         this.team_abbreviation = info[2];
         this.player_height = Float.parseFloat(info[4]);
         this.stats = this.setStats(info[12], info[13], info[14]);   // 12,13,14
-        this.size = this.setSize();                                  
 
     }
 
@@ -55,14 +52,6 @@ public class NbaPlayer {
 
         return stats;
     }
-
-    private int setSize(){
-        int size = 0;
-
-        
-
-        return size;
-    }   
 
     public void fromByteArray(byte[] array) throws Exception { // recebe o array de dados e instancia o objeto
 
