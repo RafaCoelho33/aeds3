@@ -14,8 +14,15 @@ class PlayerReader {
         File file = new File(file_path);
         FileReader fr = new FileReader(file);
         BufferedReader br = new BufferedReader(fr);
-        
 
+        String linha = "";
+
+        while((linha = br.readLine()) != null)
+        {
+            NbaPlayer player = new NbaPlayer(linha);
+            byte[] array = player.toByteArray();
+
+        }     
 
 
         br.close();
