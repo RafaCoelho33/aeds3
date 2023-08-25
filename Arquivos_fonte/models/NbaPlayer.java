@@ -9,7 +9,6 @@ public class NbaPlayer {
     protected String stats;
     protected long insertion_date;
     protected float player_height;
-    
 
     public NbaPlayer(int id, String player_name, String team_abbreviation, String stats, long insertion_date,
             float player_height, int size) {
@@ -28,7 +27,7 @@ public class NbaPlayer {
         this.player_name = info[1];
         this.team_abbreviation = info[2];
         this.player_height = Float.parseFloat(info[4]);
-        this.stats = this.setStats(info[12], info[13], info[14]);   // 12,13,14
+        this.stats = this.setStats(info[12], info[13], info[14]); // 12,13,14
 
     }
 
