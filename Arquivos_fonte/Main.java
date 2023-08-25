@@ -13,6 +13,10 @@ class Main {
         NbaPlayer player = new NbaPlayer(linha);
         byte[] array = player.toByteArray();
         reader.writeRegister(array);
+
+        NbaPlayer player2 = new NbaPlayer();
+        player2.fromByteArray(array);
+        System.out.println(player2.toString());
         
     }
 }

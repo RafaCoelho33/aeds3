@@ -20,6 +20,15 @@ public class NbaPlayer {
         this.player_height = player_height;
     }
 
+    @Override
+    public String toString() {
+        return "NbaPlayer [id=" + id + ", player_name=" + player_name + ", team_abbreviation=" + team_abbreviation
+                + ", stats=" + stats + ", insertion_date=" + insertion_date + ", player_height=" + player_height + "]";
+    }
+
+    public NbaPlayer() {
+    }
+
     public NbaPlayer(String line) {
         String[] info = line.split(",");
 
