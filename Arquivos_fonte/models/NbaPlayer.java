@@ -20,6 +20,54 @@ public class NbaPlayer {
         this.player_height = player_height;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getPlayer_name() {
+        return player_name;
+    }
+
+    public void setPlayer_name(String player_name) {
+        this.player_name = player_name;
+    }
+
+    public String getTeam_abbreviation() {
+        return team_abbreviation;
+    }
+
+    public void setTeam_abbreviation(String team_abbreviation) {
+        this.team_abbreviation = team_abbreviation;
+    }
+
+    public String getStats() {
+        return stats;
+    }
+
+    public void setStats(String stats) {
+        this.stats = stats;
+    }
+
+    public long getInsertion_date() {
+        return insertion_date;
+    }
+
+    public void setInsertion_date(long insertion_date) {
+        this.insertion_date = insertion_date;
+    }
+
+    public float getPlayer_height() {
+        return player_height;
+    }
+
+    public void setPlayer_height(float player_height) {
+        this.player_height = player_height;
+    }
+
     @Override
     public String toString() {
         return "NbaPlayer [id=" + id + ", player_name=" + player_name + ", team_abbreviation=" + team_abbreviation
@@ -51,14 +99,10 @@ public class NbaPlayer {
         dos.writeLong(this.insertion_date);
         dos.writeFloat(this.player_height);
 
+        dos.write(baos.size());
+
         return baos.toByteArray();
 
-    }
-
-    private String setStats(String pts, String reb, String ast) {
-        String stats = pts + "," + reb + "," + ast;
-
-        return stats;
     }
 
     public void fromByteArray(byte[] array) throws Exception { // recebe o array de dados e instancia o objeto
@@ -74,5 +118,13 @@ public class NbaPlayer {
         this.player_height = dis.readFloat();
 
     }
+
+    private String setStats(String pts, String reb, String ast) {
+        String stats = pts + "," + reb + "," + ast;
+
+        return stats;
+    }
+
+      
 
 }

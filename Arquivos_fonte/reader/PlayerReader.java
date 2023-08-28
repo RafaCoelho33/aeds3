@@ -16,7 +16,9 @@ public class PlayerReader {
 
     }
 
-    public void readFromFile() throws Exception { // metodo que le o arquivo csv e cria
+    public void readAndWrite() throws Exception { // metodo que le o arquivo csv e cria
+
+        //metodo similar ao create
 
         File file = new File(this.path);
         FileReader fr = new FileReader(file);
@@ -52,6 +54,14 @@ public class PlayerReader {
             e.printStackTrace();
         }
 
+    }
+
+    public NbaPlayer readRegister(){
+        NbaPlayer player = new NbaPlayer();
+        
+
+
+        return player;
     }
 
     public int getSize(NbaPlayer player) throws Exception {
