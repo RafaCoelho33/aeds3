@@ -32,6 +32,7 @@ public class CRUD {
             raf.writeUTF(Nba.getPlayer_name()); // escreve o nome no array de bytes
             raf.writeLong(Nba.getInsertion_date()); // escreve a date no array de bytes
             raf.writeUTF(Nba.getTeam_abbreviation()); // escreve o abbreviation no array de bytes
+            raf.writeUTF(Nba.getStats());
             raf.writeFloat(Nba.getPlayer_height()); // escreve a height no array de bytes
             System.out.println(Nba);
             raf.close();
