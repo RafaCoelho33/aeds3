@@ -6,7 +6,7 @@ import models.NbaPlayer;
 
 public class PlayerReader {
 
-    private static final String database_path = "./Database/player_db.db";
+    private static final String csv_path = "./Database/player_database.csv";
     // TODO verificar se o caminho esta correto
     private static CRUD crud = new CRUD();
 
@@ -33,7 +33,7 @@ public class PlayerReader {
 
         List<String> players = new ArrayList<>();
         try {
-            BufferedReader br = new BufferedReader(new FileReader(database_path));
+            BufferedReader br = new BufferedReader(new FileReader(csv_path));
             br.readLine();
             String line;
 
