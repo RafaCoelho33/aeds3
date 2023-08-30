@@ -1,11 +1,24 @@
 package reader;
 
-import java.io.FileNotFoundException;
-import java.io.RandomAccessFile;
-
+import java.io.*;
 import models.NbaPlayer;
 
 public class CRUD {
+    private static final String file_path = "";
+    private static final char lapide = '&';
+    static private DataOutputStream dos;
+
+    public CRUD() {
+        try {
+            FileOutputStream arq = new FileOutputStream(file_path);
+            dos = new DataOutputStream(arq);
+            dos.writeInt(0);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 
     // --------------- CREATE ---------------
 
@@ -22,7 +35,7 @@ public class CRUD {
 
             // criação de um novo registro
             raf.seek(raf.length());
-            raf.writeUTF(";");        //! trocar a lapide pra ;
+            raf.writeUTF(";"); // ! trocar a lapide pra ;
             raf.writeInt(Nba.toByteArray().length); // escreve o tamanho do registro
 
             // uma ideia que eu nao fiz, ao inves de inserir 1 por 1 cria um que ja insere
