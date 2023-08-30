@@ -4,8 +4,8 @@ import java.io.*;
 import models.NbaPlayer;
 
 public class CRUD {
-    private static final String file_path = "";
-    private static final char lapide = '&';
+    private static final String file_path = "./Database/player_db.db";
+    private static final char lapide = '';
     static private DataOutputStream dos;
 
     public CRUD() {
