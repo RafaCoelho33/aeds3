@@ -1,75 +1,52 @@
 package reader;
 
 import java.io.*;
+import java.util.*;
 import models.NbaPlayer;
 
 public class PlayerReader {
 
-    protected String path;
+    private static final String database_path = "./Database/player_db.db";
+    // TODO verificar se o caminho esta correto
+    private static CRUD crud = new CRUD();
 
-    public PlayerReader() {
+    public PlayerReader() {}
 
-    }
+    public static void createDatabase() throws Exception {
+        String[] players = readFile();
 
-    public PlayerReader(String file_path) {
-        this.path = file_path;
+        for (String line : players) {
+            try {
+                NbaPlayer player = new NbaPlayer(line);
+                crud.create(player);
 
-    }
-
-    public void readAndWrite() throws Exception { // metodo que le o arquivo csv e cria
-
-        //metodo similar ao create
-
-        File file = new File(this.path);
-        FileReader fr = new FileReader(file);
-        BufferedReader br = new BufferedReader(fr);
-
-        String linha = "";
-
-        while ((linha = br.readLine()) != null) {
-            NbaPlayer player = new NbaPlayer(linha);
-            byte[] array = player.toByteArray();
-            writeRegister(array);
-
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw e;
+            }
         }
-
-        br.close();
-
     }
 
-    public void writeRegister(byte[] array) throws Exception {
-        String path = "./Database/player_db.db";
+    private static String[] readFile() throws Exception { // metodo que le o arquivo csv e cria
 
-        FileOutputStream arq;
-        DataOutputStream dos;
+        // metodo similar ao create
 
+        List<String> players = new ArrayList<>();
         try {
+            BufferedReader br = new BufferedReader(new FileReader(database_path));
+            br.readLine();
+            String line;
 
-            arq = new FileOutputStream(path);
-            dos = new DataOutputStream(arq);
+            while ((line = br.readLine()) != null) {
+                players.add(line);
+            }
 
-            dos.write(array);
-
+            br.close();
         } catch (Exception e) {
             e.printStackTrace();
+            throw e;
         }
 
+        return players.toArray(new String[0]);
     }
-
-    public NbaPlayer readRegister(){
-        NbaPlayer player = new NbaPlayer();
-        
-
-
-        return player;
-    }
-
-    public int getSize(NbaPlayer player) throws Exception {
-
-        byte[] array = player.toByteArray();
-        int size = array.length;
-
-        return size;
-    }
-
 }

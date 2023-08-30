@@ -88,43 +88,53 @@ public class NbaPlayer {
 
     }
 
-    public byte[] toByteArray() throws Exception { // cria o array de bytes com os dados
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        DataOutputStream dos = new DataOutputStream(baos);
+    //method that creates the byte array with the object
+    public byte[] toByteArray() throws Exception { 
 
-        dos.writeInt(this.id);
-        dos.writeUTF(this.player_name);
-        dos.writeUTF(this.team_abbreviation);
-        dos.writeUTF(this.stats);
-        dos.writeLong(this.insertion_date);
-        dos.writeFloat(this.player_height);
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            DataOutputStream dos = new DataOutputStream(baos);
 
-        dos.write(baos.size());
+            dos.writeInt(this.id);
+            dos.writeUTF(this.player_name);
+            dos.writeUTF(this.team_abbreviation);
+            dos.writeUTF(this.stats);
+            dos.writeLong(this.insertion_date);
+            dos.writeFloat(this.player_height);
 
-        return baos.toByteArray();
-
-    }
-
-    public void fromByteArray(byte[] array) throws Exception { // recebe o array de dados e instancia o objeto
-
-        ByteArrayInputStream bais = new ByteArrayInputStream(array);
-        DataInputStream dis = new DataInputStream(bais);
-
-        this.id = dis.readInt();
-        this.player_name = dis.readUTF();
-        this.team_abbreviation = dis.readUTF();
-        this.stats = dis.readUTF();
-        this.insertion_date = dis.readLong();
-        this.player_height = dis.readFloat();
+            return baos.toByteArray();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
 
     }
 
+    //method that recieves the byte array and creates the object
+    public void fromByteArray(byte[] array) throws Exception { 
+
+        try {
+            ByteArrayInputStream bais = new ByteArrayInputStream(array);
+            DataInputStream dis = new DataInputStream(bais);
+
+            this.id = dis.readInt();
+            this.player_name = dis.readUTF();
+            this.team_abbreviation = dis.readUTF();
+            this.stats = dis.readUTF();
+            this.insertion_date = dis.readLong();
+            this.player_height = dis.readFloat();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+    }
+
+   //method that creates the field "stats" 
     private String setStats(String pts, String reb, String ast) {
         String stats = pts + "," + reb + "," + ast;
 
         return stats;
     }
-
-      
 
 }

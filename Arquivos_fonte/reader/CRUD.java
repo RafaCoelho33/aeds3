@@ -9,7 +9,7 @@ public class CRUD {
 
     // --------------- CREATE ---------------
 
-    public static boolean create(NbaPlayer Nba) throws FileNotFoundException {
+    public boolean create(NbaPlayer Nba) throws FileNotFoundException {
         RandomAccessFile raf = new RandomAccessFile("./Database/player_db.db", "rw");
         try {
             // processo de escrita do novo id
@@ -38,7 +38,7 @@ public class CRUD {
             raf.close();
             return true;
         } catch (Exception e) {
-            System.out.println("-> Erro ao criar o registro!");
+            System.out.println("-> Erro ao criar o registro! -> " + e);
             return false;
         }
     }
