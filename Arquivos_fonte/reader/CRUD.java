@@ -44,6 +44,9 @@ public class CRUD {
             System.out.println("-> Erro ao criar o registro! -> " + e);
         }
 
-        // --------------- READS ---------------
     }
+
+    // --------------- READS ---------------
+
+    
 }
