@@ -48,5 +48,27 @@ public class CRUD {
 
     // --------------- READS ---------------
 
-    
+    public static void readFile(int search) throws IOException {
+        try {
+            RandomAccessFile raf = new RandomAccessFile("./Database/player_db.db", "rw");
+            raf.seek(4);
+            long currentPosition = raf.getFilePointer();
+            long endPosition = raf.length();
+            int len;
+            byte ba[];
+            boolean flag = false;
+            while (raf.getFilePointer() < raf.length()) {
+                if (raf.readByte() == 0) { // Se a lápide não existe (0000)
+                    len = raf.readInt(); // Leitura do tamanho (lenght) do registro
+                    ba = new byte[len]; // Cria um vetor de bytes de acordo com o tamanho
+                    raf.read(ba); // Lê o vetor de bytes
+                    
+
+                }
+            }
+        }
+
+      
+
+    }
 }
