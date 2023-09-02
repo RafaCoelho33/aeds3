@@ -48,9 +48,10 @@ public class CRUD {
 
     // --------------- READS ---------------
 
-    public static void readFile(int search) throws IOException {
+    public static NbaPlayer readFile(int search) throws IOException {
         try {
             RandomAccessFile raf = new RandomAccessFile("./Database/player_db.db", "rw");
+            NbaPlayer player = new NbaPlayer();
             raf.seek(4);
             long currentPosition = raf.getFilePointer();
             long endPosition = raf.length();
@@ -62,13 +63,31 @@ public class CRUD {
                     len = raf.readInt(); // Leitura do tamanho (lenght) do registro
                     ba = new byte[len]; // Cria um vetor de bytes de acordo com o tamanho
                     raf.read(ba); // Lê o vetor de bytes
-                    
-
+                    player.fromByteArray(ba); // Converte o array em bytes no objeto
+                    if (player.getId() == search) { // Força a terminada da leitura do arquivo
+                        currentPosition = endPosition; // Força a terminada da leitura do arquivo
+                        return player;
+                    } else { // Senão, continua a ler
+                        currentPosition = raf.getFilePointer();
+                    }
+                } else { // Se a lapide existir, ele salta para o registro
+                    len = raf.readInt();
+                    long temp = raf.getFilePointer();
+                    raf.seek(temp + len);s
+                    currentPosition = raf.getFilePointer();
                 }
             }
+            raf.close();
+            if (flag) { // Se contem o registro, retorna o filme
+                return player;
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            System.out.println(" -> Erro na leitura do registro!");
+            return null;
         }
-
-      
-
     }
+
+    // --------------- UPDATE ---------------
 }
