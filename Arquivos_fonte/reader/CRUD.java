@@ -78,7 +78,7 @@ public class CRUD {
                 }
             }
             raf.close();
-            if (flag) { // Se contem o registro, retorna o filme
+            if (flag) { // Se contem o registro, retorna o player
                 return player;
             } else {
                 return null;
