@@ -73,7 +73,7 @@ public class CRUD {
                 } else { // Se a lapide existir, ele salta para o registro
                     len = raf.readInt();
                     long temp = raf.getFilePointer();
-                    raf.seek(temp + len);s
+                    raf.seek(temp + len);
                     currentPosition = raf.getFilePointer();
                 }
             }
