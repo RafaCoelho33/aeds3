@@ -90,4 +90,28 @@ public class CRUD {
     }
 
     // --------------- UPDATE ---------------
+
+    public boolean update (NbaPlayer newPlayer) {
+        try (RandomAccessFile raf = new RandomAccessFile("./Database/player_db.db", "rw")) {
+            raf.seek(4);
+
+            long index = raf.getFilePointer();
+            long EOF = raf.length();
+
+            while (index < EOF) {
+                if (raf.readChar() == lapide) {
+                    int nbaSize = raf.readInt();
+                    byte[] 
+                }
+            }
+
+        }
+    
+
+        return false;
+        
+        
+    }
+
+
 }
