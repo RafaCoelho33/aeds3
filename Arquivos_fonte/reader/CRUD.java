@@ -92,21 +92,38 @@ public class CRUD {
     // --------------- UPDATE ---------------
 
     public boolean update (NbaPlayer newPlayer) {
-        try (RandomAccessFile raf = new RandomAccessFile("./Database/player_db.db", "rw")) {
+
+        try {
+            RandomAccessFile raf = new RandomAccessFile("./Database/player_db.db", "rw");
+            NbaPlayer NbaPlayer = new NbaPlayer();
             raf.seek(4);
-
-            long index = raf.getFilePointer();
-            long EOF = raf.length();
-
-            while (index < EOF) {
-                if (raf.readChar() == lapide) {
-                    int nbaSize = raf.readInt();
-                    byte[] 
+            long currentPosition = raf.getFilePointer();
+            long endPosition = raf.getFilePointer();
+            int len;
+            byte ba[];
+            int flag = 0;
+            boolean find = false;
+            while (currentPosition < endPosition) {
+                long pointer = raf.getFilePointer();
+                if (raf.readByte() == 0) {
+                    len = raf.readInt();
+                    ba = new byte[len];
+                    raf.read(ba);
+                    NbaPlayer.fromByteArray(ba);
+                    if (NbaPlayer.getId() == newPlayer.getId()) { // Checar se o ranking é igual
+                        if(!(newPlayer.getPlayer_name().equals(NbaPlayer.getPlayer_name()))) { // Compara o nome dos arquivos 
+                            if (newPlayer.getPlayer_name().length() != NbaPlayer.getPlayer_name().length()) { // Compara o tamanho
+                                flag ++;
+                            }
+                        }
+                        NbaPlayer.setPlayer_name(newPlayer.getPlayer_name()); // Seta o nome do objeto como o criado no Menu
+                        if (newPlayer.getInsertion_date() != 0) {
+                            NbaPlayer.setInsertion_date(newPlayer.getInsertion_date());
+                        }
+                    }
                 }
             }
-
         }
-    
 
         return false;
         
