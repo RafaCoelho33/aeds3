@@ -1,15 +1,14 @@
 import java.io.*;
 import java.util.*;
 
-import models.NbaPlayer;
+import reader.CRUD;
 
-class Menu extends Crud {
+class Menu extends CRUD {
 
     public static void main(String[] args) throws IOException {
         RandomAccessFile raf = new RandomAccessFile("./Database/player_db.db", "rw");
         Scanner sc = new Scanner(System.in);
-        NbaPlayer NbaPlayer = new NbaPlayer();
-        boolean flag = true;
+        
         int opcao = 0;
         boolean loop = true;
 
