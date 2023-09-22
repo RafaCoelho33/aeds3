@@ -4,7 +4,7 @@ import java.io.*;
 import models.NbaPlayer;
 
 public class CRUD {
-    private static final String file_path = "../Database/player_db.db";
+    private static final String file_path = "./Database/player_db.db";
     private static final char lapide = '&';
     private static final char lapideInvalida = '*';
     static private DataOutputStream dos;
@@ -13,7 +13,7 @@ public class CRUD {
         try {
             FileOutputStream arq = new FileOutputStream(file_path);
             dos = new DataOutputStream(arq);
-            dos.writeShort(0);
+            dos.writeInt(0);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -28,9 +28,9 @@ public class CRUD {
         try {
             // id creation
             raf.seek(0);
-            short lastId = raf.readShort();
+            int lastId = raf.readInt();
             raf.seek(0);
-            player.setId((short) (lastId + 1));
+            player.setId((lastId + 1));
             raf.seek(0);
             raf.writeInt(player.getId());
 
@@ -51,7 +51,7 @@ public class CRUD {
 
     // --------------- READS ---------------
 
-    public NbaPlayer read(short searchId) throws Exception {
+    public NbaPlayer read(int searchId) throws Exception {
         try (RandomAccessFile raf = new RandomAccessFile(file_path, "r")) {
             try {
                 raf.seek(4);
@@ -69,6 +69,11 @@ public class CRUD {
                             raf.seek(raf.getFilePointer() + size);
 
                         }
+                    }
+                    else if(raf.readChar() == lapideInvalida){
+                        int size = raf.readInt();
+                        raf.seek(raf.getFilePointer() + size);
+
                     }
                 }
                 return null;
@@ -100,7 +105,7 @@ public class CRUD {
 
                 // getting the new id
                 raf.seek(0);
-                short lastId = raf.readShort();
+                int lastId = raf.readInt();
                 newPlayer.setId(lastId);
 
                 // writing the new register at the end of the file
@@ -119,7 +124,7 @@ public class CRUD {
     }
 
     // ----------------DELETE-----------------------
-    public boolean delete(short deleteId) throws Exception {
+    public boolean delete(int deleteId) throws Exception {
         try (RandomAccessFile raf = new RandomAccessFile(file_path, "rw")) {
             long pos = getFilePointer(deleteId);
             raf.seek(pos - 1);
@@ -129,7 +134,7 @@ public class CRUD {
     }
 
     // -----------------SEARCH-----------------------
-    public long getFilePointer(short searchId) throws Exception {
+    public long getFilePointer(int i) throws Exception {
         long pos = 0;
         try (RandomAccessFile raf = new RandomAccessFile("../Database/", "r")) {
             try {
@@ -142,7 +147,7 @@ public class CRUD {
                         byte[] array = new byte[size];
                         NbaPlayer player = new NbaPlayer();
                         player.fromByteArray(array);
-                        if (player.getId() == searchId) {
+                        if (player.getId() == i) {
                             return pos;
 
                         } else {

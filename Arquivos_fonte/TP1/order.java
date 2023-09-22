@@ -26,10 +26,12 @@ public class order {
         RandomAccessFile rafOutput;
 
         File[] files = new File[n];
+        long[] filesPointers = new long[n];     //this array stores the position of the last register (is it necessary?)
         for(int i = 0; i < n; i++){files[i] = new File("../Database/inputFile"+ i);}
 
         int numRegister = 0;
         rafInput.seek(0);
+
 
         for(int j = 0; j < files.length; j++){
             rafOutput = new RandomAccessFile(files[j], "rw");

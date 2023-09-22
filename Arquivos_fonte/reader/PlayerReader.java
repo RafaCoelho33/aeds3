@@ -7,7 +7,6 @@ import models.NbaPlayer;
 public class PlayerReader {
 
     private static final String csv_path = "./Database/player_database.csv";
-    // TODO verificar se o caminho esta correto
     private static CRUD crud = new CRUD();
 
     public PlayerReader() {}

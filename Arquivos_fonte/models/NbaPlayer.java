@@ -4,14 +4,14 @@ import java.io.*;
 import java.util.Date;
 
 public class NbaPlayer {
-    protected short id;
+    protected int id;
     protected String player_name;
     protected String team_abbreviation;
     protected String stats;
     protected long insertion_date;
     protected float player_height;
 
-    public NbaPlayer(short id, String player_name, String team_abbreviation, String stats, long insertion_date,
+    public NbaPlayer(int id, String player_name, String team_abbreviation, String stats, long insertion_date,
             float player_height, int size) {
         this.id = id;
         this.player_name = player_name;
@@ -21,12 +21,12 @@ public class NbaPlayer {
         this.player_height = player_height;
     }
 
-    public short getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(short id) {
-        this.id = id;
+    public void setId(int i) {
+        this.id = i;
     }
 
     public String getPlayer_name() {
@@ -83,7 +83,7 @@ public class NbaPlayer {
 
         Date today = new Date();
 
-        this.id = Short.parseShort(info[0]);
+        this.id = Integer.parseInt(info[0]);
         this.player_name = info[1];
         this.team_abbreviation = info[2];
         this.player_height = Float.parseFloat(info[4]);
@@ -121,7 +121,7 @@ public class NbaPlayer {
             ByteArrayInputStream bais = new ByteArrayInputStream(array);
             DataInputStream dis = new DataInputStream(bais);
 
-            this.id = dis.readShort();  
+            this.id = dis.readInt();  
             this.player_name = dis.readUTF();
             this.team_abbreviation = dis.readUTF();
             this.stats = dis.readUTF();
