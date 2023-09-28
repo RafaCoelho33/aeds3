@@ -1,4 +1,4 @@
-package TP1;
+package externalFiles;
 
 //TODO criar nova pasta raiz para a ordenação
 import java.io.*;

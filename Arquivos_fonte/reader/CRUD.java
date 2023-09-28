@@ -9,6 +9,7 @@ public class CRUD {
     private static final char lapideInvalida = '*';
     static private DataOutputStream dos;
 
+    
     public CRUD() {
         try {
             FileOutputStream arq = new FileOutputStream(file_path);
@@ -24,14 +25,13 @@ public class CRUD {
     // --------------- CREATE ---------------
 
     public void create(NbaPlayer player) throws Exception {
-        RandomAccessFile raf = new RandomAccessFile(file_path, "rw");
-        try {
+
+        try (RandomAccessFile raf = new RandomAccessFile(file_path, "rw")) {
             // id creation
             raf.seek(0);
             int lastId = raf.readInt();
             raf.seek(0);
             player.setId((lastId + 1));
-            raf.seek(0);
             raf.writeInt(player.getId());
 
             // writing the new player
@@ -45,42 +45,39 @@ public class CRUD {
             System.out.println("-> Erro ao criar o registro! -> " + e);
         }
 
-        raf.close();
-
     }
 
-    // --------------- READS ---------------
+    // --------------- READ ---------------
 
     public NbaPlayer read(int searchId) throws Exception {
-        try (RandomAccessFile raf = new RandomAccessFile(file_path, "r")) {
-            try {
-                raf.seek(4);
-                long eof = raf.length();
-                while (raf.getFilePointer() < eof) {
-                    if (raf.readChar() == lapide) {
-                        int size = raf.readInt();
-                        byte[] array = new byte[size];
-                        NbaPlayer player = new NbaPlayer();
-                        player.fromByteArray(array);
-                        if (player.getId() == searchId) {
-                            return player;
+        try (RandomAccessFile raf = new RandomAccessFile(file_path, "rw")) {
+            raf.seek(4);
+            while (raf.getFilePointer() < raf.length()) {
+                char tombstone = raf.readChar();
+                if (tombstone == lapide) {
+                    int size = raf.readInt();
+                    byte[] array = new byte[size];
+                    raf.read(array);
+                    NbaPlayer player = new NbaPlayer();
+                    player.fromByteArray(array);
+                    if (player.getId() == searchId) {
+                        return player;
 
-                        } else {
-                            raf.seek(raf.getFilePointer() + size);
-
-                        }
-                    }
-                    else if(raf.readChar() == lapideInvalida){
-                        int size = raf.readInt();
+                    } else {
                         raf.seek(raf.getFilePointer() + size);
 
                     }
+                } else if (tombstone == lapideInvalida) {
+                    int size = raf.readInt();
+                    raf.seek(raf.getFilePointer() + size);
+
                 }
-                return null;
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw e;
             }
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+
         }
 
     }
@@ -106,9 +103,10 @@ public class CRUD {
                 // getting the new id
                 raf.seek(0);
                 int lastId = raf.readInt();
-                newPlayer.setId(lastId);
+                newPlayer.setId(lastId + 1);
 
                 // writing the new register at the end of the file
+                raf.seek(raf.length());
                 byte[] array = newPlayer.toByteArray();
                 raf.writeInt(array.length);
                 raf.write(array);
@@ -136,30 +134,29 @@ public class CRUD {
     // -----------------SEARCH-----------------------
     public long getFilePointer(int i) throws Exception {
         long pos = 0;
-        try (RandomAccessFile raf = new RandomAccessFile("../Database/", "r")) {
-            try {
-                raf.seek(4);
-                long eof = raf.length();
-                while (raf.getFilePointer() < eof) {
-                    if (raf.readChar() == lapide) {
-                        pos = raf.getFilePointer();
-                        int size = raf.readInt();
-                        byte[] array = new byte[size];
-                        NbaPlayer player = new NbaPlayer();
-                        player.fromByteArray(array);
-                        if (player.getId() == i) {
-                            return pos;
+        try (RandomAccessFile raf = new RandomAccessFile(file_path, "rw")) {
+            raf.seek(4);
+            while (raf.getFilePointer() < raf.length()) {
+                if (raf.readChar() == lapide) {
+                    pos = raf.getFilePointer();
+                    int size = raf.readInt();
+                    byte[] array = new byte[size];
+                    raf.read(array);
+                    NbaPlayer player = new NbaPlayer();
+                    player.fromByteArray(array);
+                    if (player.getId() == i) {
+                        return pos;
 
-                        } else {
-                            raf.seek(raf.getFilePointer() + size);
+                    } else {
+                        raf.seek(raf.getFilePointer() + size);
 
-                        }
                     }
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw e;
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+
         }
 
         return pos;

@@ -1,4 +1,4 @@
-package TP1;
+package externalFiles;
 
 //TODO criar nova pasta raiz para a ordenação
 import java.io.*;
@@ -6,7 +6,7 @@ import java.io.*;
 public class orderTest {
     private int m; // number of registers
     private int n; // number of paths
-    private static final String file_path = "../Database/player_db.db";
+    private static final String database_path = "../Database/player_db.db";
 
     public orderTest() {
         this.m = 4200;
@@ -20,11 +20,11 @@ public class orderTest {
 
     public void distribution() throws Exception {
 
-        RandomAccessFile rafInput = new RandomAccessFile(file_path, "r");
+        RandomAccessFile rafInput = new RandomAccessFile(database_path, "r");
         RandomAccessFile rafOutput;
 
-        File[] files = new File[n];
-        for (int i = 0; i < n; i++) {files[i] = new File("./Database/tmpFile" + (i + 1) + ".db");}
+        File[] files = new File[2*n];
+        for (int i = 0; i < n; i++) {files[i] = new File("../Database/tmpFiles/tmpFile" + (i + 1) + ".db");}
 
         int circularCounter = 0;
         rafInput.seek(0);
