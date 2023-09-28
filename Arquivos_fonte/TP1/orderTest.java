@@ -55,10 +55,23 @@ public class orderTest {
             circularCounter = (++circularCounter) % n;
         }
 
-        // TODO deletar os arquivos txt temporarios, deixando apenas o arquivo ordenado
-        // final
-
         rafInput.close();
+        intercalation();
+
+    }
+    
+    public void intercalation(){
+        
+        
+        
+        // TODO deletar os arquivos txt temporarios, deixando apenas o arquivo ordenado
     }
 
+
+    public void quickSort(){
+        
+
+
+    }
+    
 }
