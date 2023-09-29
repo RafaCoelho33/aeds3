@@ -97,7 +97,7 @@ public class CRUD {
                 return true;
             } else {
                 // deleting the register from the database
-                raf.seek(pos - 1);
+                raf.seek(pos - 4);
                 raf.writeChar(lapideInvalida);
 
                 // getting the new id
