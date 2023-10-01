@@ -181,14 +181,14 @@ public class BTree {
         while (currentPosition != endPosition) {
             if (raf.readByte() == 0) { // Se a lápide não existe (0000)
                 len = raf.readInt(); // Leitura do length (length) do registro
-                int ranking = raf.readInt();
+                int id = raf.readInt();
                 double pointer = raf.getFilePointer();
-                raf.readUTF(); // Nome inteiro do filme
+                raf.readUTF(); // Nome inteiro do Player
                 raf.readInt(); // Year
                 raf.readUTF(); // Runtime
                 raf.readUTF(); // Genre
-                btree.insert(new Key(ranking, pointer));
-                file.writeInt(ranking);
+                btree.insert(new Key(id, pointer));
+                file.writeInt(id);
                 file.writeDouble(pointer);
                 currentPosition = raf.getFilePointer();
             } else { // Se a lapide existir, ele pula o registro
