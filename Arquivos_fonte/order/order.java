@@ -1,18 +1,17 @@
 package order;
 
-//TODO criar nova pasta raiz para a ordenação
 import java.io.*;
 
 import models.NbaPlayer;
-import reader.CRUD;
 
 public class order {
-    private int m; // number of registros
+    private int m; // number of registers
     private int n; // number of paths
-    private static final String file_path = "../Database/player_db.db";
+    private static final String database_path = "../Database/player_db.db";
 
     public order() {
-
+        this.m = 4200;
+        this.n = 3;
     }
 
     public order(int m, int n) {
@@ -20,29 +19,91 @@ public class order {
         this.n = n;
     }
 
-    public void interlacaçãoComum() throws Exception{
+    public void distribution() throws Exception {
 
-        RandomAccessFile rafInput = new RandomAccessFile(file_path, "r");
-        RandomAccessFile rafOutput;
+        RandomAccessFile rafInput = new RandomAccessFile(database_path, "r");
+        NbaPlayer[] players = new NbaPlayer[m];
 
-        File[] files = new File[n];
-        long[] filesPointers = new long[n];     //this array stores the position of the last register (is it necessary?)
-        for(int i = 0; i < n; i++){files[i] = new File("../Database/inputFile"+ i);}
+        File[] files = new File[2 * n];
+        for (int i = 0; i < n; i++) {
+            files[i] = new File("./Database/tmpFiles/tmpFile" + (i + 1) + ".db");
+        }
+        int circularCounter = 0;
 
-        int numRegister = 0;
-        rafInput.seek(0);
+        rafInput.seek(4);
+        while (rafInput.getFilePointer() < rafInput.length()) {
 
+            for (int i = 0; i < m;) {
+                char tombstone = rafInput.readChar();
+                if (tombstone == '&') {
+                    int size = rafInput.readInt();
+                    byte[] array = new byte[size];
+                    rafInput.read(array);
+                    NbaPlayer player = new NbaPlayer();
+                    player.fromByteArray(array);
+                    i++;
 
-        for(int j = 0; j < files.length; j++){
-            rafOutput = new RandomAccessFile(files[j], "rw");
-
-            for(int i = 0; rafInput.getFilePointer() < rafInput.length() && numRegister <= m; i++){            
-                //realizar a leitura do arquivo database e jogar pro arquivo temporario
+                    players[i] = player;
+                } else if (tombstone == '*') {
+                    int size = rafInput.readInt();
+                    rafInput.seek(rafInput.getFilePointer() + size);
+                }
 
             }
+            quickSort(players, 0, players.length);
+            writeArray(players, files[circularCounter]);
+
+            circularCounter = (++circularCounter) % n;
+        }
+
+        rafInput.close();
     }
 
-    rafInput.close();
-}
+    public static void quickSort(NbaPlayer[] array, int low, int high) {
+        if (low < high) {
+            int pivotIndex = partition(array, low, high);
+            quickSort(array, low, pivotIndex - 1);
+            quickSort(array, pivotIndex + 1, high);
+        }
+    }
+
+    private static int partition(NbaPlayer[] array, int low, int high) {
+        NbaPlayer pivot = array[high];
+        int i = low - 1;
+        for (int j = low; j < high; j++) {
+            if (array[j].getPlayer_name().compareTo(pivot.getPlayer_name()) < 0) {
+                i++;
+                swap(array, i, j);
+            }
+        }
+        swap(array, i + 1, high);
+        return i + 1;
+    }
+
+    private static void swap(NbaPlayer[] array, int i, int j) {
+        NbaPlayer temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+
+    private void writeArray(NbaPlayer[] players, File file) throws Exception {
+        try (RandomAccessFile raf = new RandomAccessFile(file, "rw")) {
+            for (int i = 0; i < players.length; i++) {
+                byte[] array = players[i].toByteArray();
+                int registerSize = array.length;
+
+                raf.seek(raf.length());
+
+                raf.writeInt(registerSize);
+                raf.write(array);
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+    }
 
 }
