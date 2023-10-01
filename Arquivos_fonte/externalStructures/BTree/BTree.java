@@ -184,9 +184,10 @@ public class BTree {
                 int id = raf.readInt();
                 double pointer = raf.getFilePointer();
                 raf.readUTF(); // Nome inteiro do Player
-                raf.readInt(); // Year
-                raf.readUTF(); // Runtime
-                raf.readUTF(); // Genre
+                raf.readLong(); // Date
+                raf.readUTF(); // Stats
+                raf.readFloat(); // Height
+                raf.readUTF(); // Team Abbreviation
                 btree.insert(new Key(id, pointer));
                 file.writeInt(id);
                 file.writeDouble(pointer);
