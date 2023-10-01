@@ -24,7 +24,7 @@ public class CRUD {
 
     // --------------- CREATE ---------------
 
-    public void create(NbaPlayer player) throws Exception {
+    public static boolean create(NbaPlayer player) throws Exception {
 
         try (RandomAccessFile raf = new RandomAccessFile(file_path, "rw")) {
             // id creation
@@ -44,12 +44,13 @@ public class CRUD {
         } catch (Exception e) {
             System.out.println("-> Erro ao criar o registro! -> " + e);
         }
+        return false;
 
     }
 
     // --------------- READ ---------------
 
-    public NbaPlayer read(int searchId) throws Exception {
+    public static NbaPlayer read(int searchId) throws Exception {
         try (RandomAccessFile raf = new RandomAccessFile(file_path, "rw")) {
             raf.seek(4);
             while (raf.getFilePointer() < raf.length()) {
@@ -122,7 +123,7 @@ public class CRUD {
     }
 
     // ----------------DELETE-----------------------
-    public boolean delete(int deleteId) throws Exception {
+    public static boolean delete(int deleteId) throws Exception {
         try (RandomAccessFile raf = new RandomAccessFile(file_path, "rw")) {
             long pos = getFilePointer(deleteId);
             raf.seek(pos - 1);
@@ -132,7 +133,7 @@ public class CRUD {
     }
 
     // -----------------SEARCH-----------------------
-    public long getFilePointer(int i) throws Exception {
+    public static long getFilePointer(int i) throws Exception {
         long pos = 0;
         try (RandomAccessFile raf = new RandomAccessFile(file_path, "rw")) {
             raf.seek(4);
