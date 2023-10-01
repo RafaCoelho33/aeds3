@@ -7,6 +7,7 @@ import models.NbaPlayer;
 public class order {
     private int m; // number of registers
     private int n; // number of paths
+    private File[] files = new File[2 * n];
     private static final String database_path = "../Database/player_db.db";
 
     public order() {
@@ -24,7 +25,6 @@ public class order {
         RandomAccessFile rafInput = new RandomAccessFile(database_path, "r");
         NbaPlayer[] players = new NbaPlayer[m];
 
-        File[] files = new File[2 * n];
         for (int i = 0; i < n; i++) {
             files[i] = new File("./Database/tmpFiles/tmpFile" + (i + 1) + ".db");
         }
@@ -103,6 +103,13 @@ public class order {
             e.printStackTrace();
             throw e;
         }
+
+    }
+
+    private void intercalation()
+    {
+
+
 
     }
 
