@@ -5,11 +5,11 @@ import java.util.*;
 
 import models.NbaPlayer;
 
-public class invertedList {
+public class InvertedList {
     private Map<String, Map<Integer, Long>> index;
     private String database_path = "././Database/player_db.db";
 
-    public invertedList() {
+    public InvertedList() {
         index = new HashMap<>();
     }
 

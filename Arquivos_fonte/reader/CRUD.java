@@ -31,7 +31,7 @@ public class CRUD {
             raf.seek(0);
             int lastId = raf.readInt();
             raf.seek(0);
-            player.setId((lastId + 1));
+            player.setId(++lastId);
             raf.writeInt(player.getId());
 
             // writing the new player
