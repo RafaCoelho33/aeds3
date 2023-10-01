@@ -24,10 +24,10 @@ public class orderTest {
         RandomAccessFile rafOutput;
 
         File[] files = new File[2*n];
-        for (int i = 0; i < n; i++) {files[i] = new File("../Database/tmpFiles/tmpFile" + (i + 1) + ".db");}
+        for (int i = 0; i < n; i++) {files[i] = new File("./Database/tmpFiles/tmpFile" + (i + 1) + ".db");}
 
         int circularCounter = 0;
-        rafInput.seek(0);
+        rafInput.seek(4);
 
         while (rafInput.getFilePointer() < rafInput.length()) {
 
