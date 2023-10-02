@@ -116,6 +116,7 @@ public class Main {
                                 InvertedList invertedList1 = new InvertedList();
                                 NbaPlayer player = new NbaPlayer(0, "teste_player", "CHI", "7.0,2.2,9.0", 198);
                                 invertedList1.createList();
+                                System.out.println(invertedList1.searchValue(player));
                                 invertedList1.insertPlayer(player);
                                 System.out.println(invertedList1.searchValue(player));
                             } else if (option == 2) {

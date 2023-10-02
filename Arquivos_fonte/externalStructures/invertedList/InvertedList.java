@@ -36,7 +36,7 @@ public class InvertedList {
         String team = player.getTeam_abbreviation();
         insertPlayer(team, address);
     }
-
+    
     public void insertPlayer(String type, long address) {
         if (!index.containsKey(type)) {
             index.put(type, new ArrayList<>());

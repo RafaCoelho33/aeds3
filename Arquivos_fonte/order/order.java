@@ -9,7 +9,7 @@ public class Order {
     private int n; // number of paths
     private File[] files1 = new File[n];
     private File[] files2 = new File[n];
-    private static final String database_path = "../Database/player_db.db";
+    private static final String database_path = "./Database/player_db.db";
 
     public Order() {
         this.m = 4200;
