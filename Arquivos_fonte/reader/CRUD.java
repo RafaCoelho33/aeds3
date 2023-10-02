@@ -85,9 +85,9 @@ public class CRUD {
 
     // --------------- UPDATE ---------------
 
-    public boolean update(NbaPlayer newPlayer) throws Exception {
+    public static boolean update(NbaPlayer newPlayer) throws Exception {
         try (RandomAccessFile raf = new RandomAccessFile(file_path, "rw")) {
-            long pos = this.getFilePointer(newPlayer.getId());
+            long pos = getFilePointer(newPlayer.getId());
             raf.seek(pos);
             int size = raf.readInt();
             raf.seek(pos);

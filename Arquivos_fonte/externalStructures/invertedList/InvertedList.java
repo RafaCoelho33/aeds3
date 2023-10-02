@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.*;
 
 import models.NbaPlayer;
+import reader.CRUD;
 
 public class InvertedList {
     private Map<String, Map<Integer, Long>> index;
@@ -19,13 +20,12 @@ public class InvertedList {
         while (raf.getFilePointer() < raf.length()) {
             char tombstone = raf.readChar();
             if (tombstone == '&') {
-                long pos = raf.getFilePointer();
                 int size = raf.readInt();
                 byte[] array = new byte[size];
                 raf.read(array);
                 NbaPlayer player = new NbaPlayer();
                 player.fromByteArray(array);
-                insertPlayer(player.getTeam_abbreviation(), player.getId(), pos);
+                insertPlayer(player);
 
             }
 
@@ -40,8 +40,9 @@ public class InvertedList {
     }
 
     // call this method to insert a new player
-    public void insertPlayer(String outerKey, Integer innerKey, Long value) {
-        insertPlayer(index, outerKey, innerKey, value);
+    public void insertPlayer(NbaPlayer player) throws Exception {   
+
+        insertPlayer(index, player.getTeam_abbreviation(), player.getId(), CRUD.getFilePointer(player.getId()));
 
     }
 
@@ -60,8 +61,8 @@ public class InvertedList {
     }
 
     // call this method to search for the value
-    public long searchValue(String outerKey, int innerKey) {
-        return (searchValue(index, outerKey, innerKey));
+    public long searchValue(NbaPlayer player) {
+        return (searchValue(index, player.getTeam_abbreviation(), player.getId()));
     }
 
     private static long searchValue(Map<String, Map<Integer, Long>> nestedMap, String outerKey, int innerKey) {

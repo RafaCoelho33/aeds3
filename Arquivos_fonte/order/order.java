@@ -4,29 +4,37 @@ import java.io.*;
 
 import models.NbaPlayer;
 
-public class order {
+public class Order {
     private int m; // number of registers
     private int n; // number of paths
-    private File[] files = new File[2 * n];
+    private File[] files1 = new File[n];
+    private File[] files2 = new File[n];
     private static final String database_path = "../Database/player_db.db";
 
-    public order() {
+    public Order() {
         this.m = 4200;
         this.n = 3;
     }
 
-    public order(int m, int n) {
+    public Order(int m, int n) {
         this.m = m;
         this.n = n;
     }
 
-    public void distribution() throws Exception {
+    public void sort() throws Exception
+    {
+        distribution();
+        intercalation();
+    }
+
+    private void distribution() throws Exception {
 
         RandomAccessFile rafInput = new RandomAccessFile(database_path, "r");
         NbaPlayer[] players = new NbaPlayer[m];
 
         for (int i = 0; i < n; i++) {
-            files[i] = new File("./Database/tmpFiles/tmpFile" + (i + 1) + ".db");
+            files1[i] = new File("./Database/tmpFiles/tmpFile" + (i + 1) + ".db");
+            files2[i] = new File("./Database/tmpFiles/tmpFile" + (i + 4) + ".db");
         }
         int circularCounter = 0;
 
@@ -51,15 +59,16 @@ public class order {
 
             }
             quickSort(players, 0, players.length);
-            writeArray(players, files[circularCounter]);
+            writeArray(players, files1[circularCounter]);
 
             circularCounter = (++circularCounter) % n;
         }
 
         rafInput.close();
+        intercalation();
     }
 
-    public static void quickSort(NbaPlayer[] array, int low, int high) {
+    private static void quickSort(NbaPlayer[] array, int low, int high) {
         if (low < high) {
             int pivotIndex = partition(array, low, high);
             quickSort(array, low, pivotIndex - 1);
@@ -106,9 +115,25 @@ public class order {
 
     }
 
-    private void intercalation()
+    private void intercalation() throws Exception
     {
+        int circularCounter = 0;
 
+
+        RandomAccessFile rafInput;
+        RandomAccessFile rafOutput;
+        NbaPlayer menor;
+        
+
+        for(int i = 0; i < n; i++)
+        {
+            rafInput = new RandomAccessFile(files1[0], "r");
+            int size = rafInput.readInt();
+            byte[] array = new byte[size];
+            rafInput.read(array);
+
+
+        }
 
 
     }

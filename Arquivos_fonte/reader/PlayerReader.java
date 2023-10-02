@@ -7,7 +7,6 @@ import models.NbaPlayer;
 public class PlayerReader {
 
     private static final String csv_path = "./Database/player_database.csv";
-    private static CRUD crud = new CRUD();
 
     public PlayerReader() {}
 
@@ -17,7 +16,7 @@ public class PlayerReader {
         for (String line : players) {
             try {
                 NbaPlayer player = new NbaPlayer(line);
-                crud.create(player);
+                CRUD.create(player);
 
             } catch (Exception e) {
                 e.printStackTrace();
