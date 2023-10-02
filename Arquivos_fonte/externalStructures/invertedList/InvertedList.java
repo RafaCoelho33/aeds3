@@ -19,8 +19,7 @@ public class InvertedList {
         RandomAccessFile raf = new RandomAccessFile(database_path, "r");
         raf.seek(4);
         while (raf.getFilePointer() < raf.length()) {
-            char tombstone = raf.readChar();
-            if (tombstone == '&') {
+            if (raf.readChar() == '&') {
                 int size = raf.readInt();
                 byte[] array = new byte[size];
                 raf.read(array);
@@ -30,7 +29,7 @@ public class InvertedList {
 
             }
 
-            else if (tombstone == '*') {
+            else{
                 int size = raf.readInt();
                 raf.seek(raf.getFilePointer() + size);
 
@@ -43,7 +42,7 @@ public class InvertedList {
     // call this method to insert a new player
     public void insertPlayer(NbaPlayer player) throws Exception {   
 
-        insertPlayer(index, player.getTeam_abbreviation(), player.getId(), CRUD.getFilePointer(player.getId()));
+        insertPlayer(index, player.getTeam_abbreviation(), player.getId(), CRUD.getPosInFile(player.getId()));
 
     }
 

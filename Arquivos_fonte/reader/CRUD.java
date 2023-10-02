@@ -14,6 +14,7 @@ public class CRUD {
             FileOutputStream arq = new FileOutputStream(file_path);
             dos = new DataOutputStream(arq);
             dos.writeInt(0);
+            dos.close();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -41,6 +42,7 @@ public class CRUD {
             raf.writeInt(array.length);
             raf.write(array);
 
+            raf.close();
             return true;
 
         } catch (Exception e) {
@@ -48,7 +50,6 @@ public class CRUD {
 
             return false;
         }
-
     }
 
     // --------------- READ ---------------
@@ -57,21 +58,17 @@ public class CRUD {
         try (RandomAccessFile raf = new RandomAccessFile(file_path, "rw")) {
             raf.seek(4);
             while (raf.getFilePointer() < raf.length()) {
-                char tombstone = raf.readChar();
-                if (tombstone == lapide) {
+                if (raf.readChar() == lapide) {
+                    NbaPlayer player = new NbaPlayer();
                     int size = raf.readInt();
                     byte[] array = new byte[size];
                     raf.read(array);
-                    NbaPlayer player = new NbaPlayer();
                     player.fromByteArray(array);
                     if (player.getId() == searchId) {
                         return player;
 
-                    } else {
-                        raf.seek(raf.getFilePointer() + size);
-
                     }
-                } else if (tombstone == lapideInvalida) {
+                } else{
                     int size = raf.readInt();
                     raf.seek(raf.getFilePointer() + size);
 
@@ -90,7 +87,7 @@ public class CRUD {
 
     public boolean update(NbaPlayer newPlayer) throws Exception {
         try (RandomAccessFile raf = new RandomAccessFile(file_path, "rw")) {
-            long pos = getFilePointer(newPlayer.getId());
+            long pos = getPosInFile(newPlayer.getId());
             raf.seek(pos);
             int size = raf.readInt();
             raf.seek(pos);
@@ -128,7 +125,7 @@ public class CRUD {
     // ----------------DELETE-----------------------
     public boolean delete(int deleteId) throws Exception {
         try (RandomAccessFile raf = new RandomAccessFile(file_path, "rw")) {
-            long pos = getFilePointer(deleteId);
+            long pos = getPosInFile(deleteId);
             raf.seek(pos - 1);
             raf.writeChar(lapideInvalida);
             return true;
@@ -136,17 +133,17 @@ public class CRUD {
     }
 
     // -----------------SEARCH-----------------------
-    public static long getFilePointer(int i) throws Exception {
+    public static long getPosInFile(int i) throws Exception {
         long pos = 0;
         try (RandomAccessFile raf = new RandomAccessFile(file_path, "rw")) {
             raf.seek(4);
             while (raf.getFilePointer() < raf.length()) {
                 if (raf.readChar() == lapide) {
                     pos = raf.getFilePointer();
+                    NbaPlayer player = new NbaPlayer();
                     int size = raf.readInt();
                     byte[] array = new byte[size];
                     raf.read(array);
-                    NbaPlayer player = new NbaPlayer();
                     player.fromByteArray(array);
                     if (player.getId() == i) {
                         return pos;

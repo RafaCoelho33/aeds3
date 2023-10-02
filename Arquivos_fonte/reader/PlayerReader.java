@@ -36,7 +36,11 @@ public class PlayerReader {
             br.readLine();
             String line;
 
-            while ((line = br.readLine()) != null) {
+            /*while ((line = br.readLine()) != null) {
+                players.add(line);
+            }*/
+            for(int i = 0; i < 50; i++){
+                line = br.readLine();
                 players.add(line);
             }
 

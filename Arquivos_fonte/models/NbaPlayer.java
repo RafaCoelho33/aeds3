@@ -72,11 +72,13 @@ public class NbaPlayer {
 
     @Override
     public String toString() {
-        return "NbaPlayer [id=" + id + ", player_name=" + player_name + ", team_abbreviation=" + team_abbreviation
-                + ", stats=" + stats + ", insertion_date=" + insertion_date + ", player_height=" + player_height + "]";
+        return "id: " + id + ", player_name: " + player_name + ", team_abbreviation: " + team_abbreviation
+                + ", stats: " + stats + ", insertion_date: " + insertion_date + ", player_height: " + player_height;
     }
 
     public NbaPlayer() {
+        Date today = new Date();
+        this.insertion_date = today.getTime();
     }
 
     public NbaPlayer(String line) {
@@ -107,6 +109,9 @@ public class NbaPlayer {
             dos.writeLong(this.insertion_date);
             dos.writeFloat(this.player_height);
 
+            dos.close();
+            baos.close();
+
             return baos.toByteArray();
         } catch (Exception e) {
             e.printStackTrace();
@@ -117,7 +122,6 @@ public class NbaPlayer {
 
     //method that recieves the byte array and creates the object
     public void fromByteArray(byte[] array) throws Exception { 
-
         try {
             ByteArrayInputStream bais = new ByteArrayInputStream(array);
             DataInputStream dis = new DataInputStream(bais);
@@ -128,6 +132,10 @@ public class NbaPlayer {
             this.stats = dis.readUTF();
             this.insertion_date = dis.readLong();
             this.player_height = dis.readFloat();
+
+            bais.close();
+            dis.close();
+
         } catch (Exception e) {
             e.printStackTrace();
             throw e;

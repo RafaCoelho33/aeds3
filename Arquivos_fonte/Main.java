@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.*;
 
 import externalStructures.ExtendableHash.ExtendableHash;
@@ -6,15 +7,15 @@ import reader.*;
 import models.*;
 import order.*;
 
-
-
-
 public class Main {
 
     public static void main(String[] args) throws Exception {
         // Start parsing data from CSV
-        PlayerReader.createDatabase();
         CRUD crud = new CRUD();
+
+        File file = new File("./Database/player_db.db");
+        if (!(file.exists() && file.length() > 100))
+            PlayerReader.createDatabase();
 
         int option = 0; // Initialize the option variable
 
@@ -47,7 +48,15 @@ public class Main {
                             switch (option) {
                                 case 1:
                                     // Create a player object and add it to the database
-                                    NbaPlayer player = new NbaPlayer(0, "teste_player", "CHI", "7.0,2.2,9.0", 198);
+                                    NbaPlayer player = new NbaPlayer();
+                                    System.out.print("Digite o nome do jogador");
+                                    player.setPlayer_name(sc.nextLine());
+                                    System.out.println("Digite o total de pontos do jogador, rebotes e assistencias");
+                                    player.setStats(sc.nextLine());
+                                    System.out.println("Digite a altura do jogador");
+                                    player.setPlayer_height(Float.parseFloat(sc.nextLine()));
+                                    System.out.println("Digite o time do jogador");
+                                    player.setTeam_abbreviation(sc.nextLine());
                                     crud.create(player);
                                     break;
                                 case 2:
@@ -56,11 +65,11 @@ public class Main {
                                     int id = Integer.parseInt(sc.nextLine());
                                     player = crud.read(id);
                                     System.out.println(player);
-                                    
+
                                     break;
                                 case 3:
                                     // Update a film in the database
-                                    player = new NbaPlayer(0, "teste_player123", "PHX", "7.0,2.2,9.0", 198);
+                                    player = new NbaPlayer(1, "teste_player123", "PHX", "7.0,2.2,9.0", 198);
                                     crud.update(player);
                                     break;
                                 case 4:
@@ -80,7 +89,7 @@ public class Main {
                             }
                         }
                         break;
-                        
+
                     case 2:
                         // Perform external merge sorting on the data
                         System.out.println("Not implemented yet");
@@ -90,7 +99,7 @@ public class Main {
                         // Initialize and perform operations on the Extendible Hash Table
                         ExtendableHash extendableHash = new ExtendableHash<>(2);
                         extendableHash.startHash();
-                        
+
                         System.out.println("Select an ID to search: ");
                         int id = Integer.parseInt(sc.nextLine());
                         System.out.println(extendableHash.get(id));
