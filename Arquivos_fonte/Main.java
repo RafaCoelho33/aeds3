@@ -5,7 +5,6 @@ import externalStructures.ExtendableHash.ExtendableHash;
 import externalStructures.invertedList.InvertedList;
 import reader.*;
 import models.*;
-import order.*;
 
 public class Main {
 

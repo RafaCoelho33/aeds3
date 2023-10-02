@@ -22,6 +22,8 @@ public class CRUD {
 
     }
 
+    public CRUD(boolean createDb){}
+
     // --------------- CREATE ---------------
 
     public boolean create(NbaPlayer player) throws Exception {
@@ -161,5 +163,27 @@ public class CRUD {
         }
 
         return pos;
+    }
+
+    public static NbaPlayer readPlayerFromPos(RandomAccessFile raf) throws Exception {
+        if (raf.getFilePointer() < raf.length()) { 
+            NbaPlayer player = new NbaPlayer();
+            
+
+            // Read and skip through records until a tombstone character is encountered
+            while (raf.readChar() != lapide) {
+                int size = raf.readInt();
+                raf.skipBytes(size); 
+            }
+
+            int size = raf.readInt(); 
+            byte[] array = new byte[size]; 
+
+            raf.read(array); 
+            player.fromByteArray(array); 
+
+            return player; // Return the deserialized Film object
+        }
+        return null; // Return null if there is no more data to read
     }
 }

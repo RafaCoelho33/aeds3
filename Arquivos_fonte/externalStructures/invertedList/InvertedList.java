@@ -7,73 +7,75 @@ import models.NbaPlayer;
 import reader.CRUD;
 
 public class InvertedList {
-    private Map<String, Map<Integer, Long>> index;
-    private String database_path = "././Database/player_db.db";
+    private Map<String, List<Long>> index;
+    private RandomAccessFile raf;
 
     public InvertedList() {
         index = new HashMap<>();
-        
+        try {
+            raf = new RandomAccessFile("././Database/player_db.db", "r");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void createList() throws Exception {
-        RandomAccessFile raf = new RandomAccessFile(database_path, "r");
         raf.seek(4);
         while (raf.getFilePointer() < raf.length()) {
-            if (raf.readChar() == '&') {
-                int size = raf.readInt();
-                byte[] array = new byte[size];
-                raf.read(array);
-                NbaPlayer player = new NbaPlayer();
-                player.fromByteArray(array);
-                insertPlayer(player);
-
-            }
-
-            else{
-                int size = raf.readInt();
-                raf.seek(raf.getFilePointer() + size);
-
-            }
-
+            long address = raf.getFilePointer();
+            NbaPlayer player = CRUD.readPlayerFromPos(raf);
+            String team = player.getTeam_abbreviation();
+            System.out.println(player);
+            insertPlayer(team, address);
         }
-        raf.close();
     }
 
-    // call this method to insert a new player
-    public void insertPlayer(NbaPlayer player) throws Exception {   
-
-        insertPlayer(index, player.getTeam_abbreviation(), player.getId(), CRUD.getPosInFile(player.getId()));
-
+    public void insertPlayer(NbaPlayer player) throws Exception {
+        CRUD crud = new CRUD(false);
+        crud.create(player);
+        long address = CRUD.getPosInFile(player.getId());
+        String team = player.getTeam_abbreviation();
+        insertPlayer(team, address);
     }
 
-    private static void insertPlayer(Map<String, Map<Integer, Long>> map, String outerKey, Integer innerKey,
-            Long value) {
 
-        // checks if the team name exists in the map
-        if (!map.containsKey(outerKey)) {
-            map.put(outerKey, new HashMap<>()); // if not, creates a new key associated with a new hash map
+    public void insertPlayer(String type, long address) {
+        if (!index.containsKey(type)) {
+            index.put(type, new ArrayList<>());
         }
-
-        // the id and address is always insert, because there will always exist a outer
-        // key for it
-        map.get(outerKey).put(innerKey, value);
-
+        index.get(type).add(address);
     }
 
-    // call this method to search for the value
-    public long searchValue(NbaPlayer player) {
-        return (searchValue(index, player.getTeam_abbreviation(), player.getId()));
-    }
+    public boolean remove(NbaPlayer player) throws Exception {
+        boolean resp = false;
+        String team = player.getTeam_abbreviation();
 
-    private static long searchValue(Map<String, Map<Integer, Long>> nestedMap, String outerKey, int innerKey) {
-        if (nestedMap.containsKey(outerKey)) {
-            Map<Integer, Long> innerMap = nestedMap.get(outerKey);
+        if (index.containsKey(team)) {
+            long pos = CRUD.getPosInFile(player.getId());
+            index.get(team).remove(pos);
 
-            if (innerMap.containsKey(innerKey)) {
-                return innerMap.get(innerKey);
+            if (index.get(team).isEmpty()) {
+                index.remove(team);
             }
+            resp = true;
         }
-        return -1;
+        return resp;
     }
 
+ 
+    public boolean searchValue(NbaPlayer player) throws Exception {
+        long pos = CRUD.getPosInFile(player.getId());
+        if (pos == 0) {
+            return false;
+        }
+        if (index.containsKey(player.getTeam_abbreviation())) {
+            return searchValue(player.getTeam_abbreviation(), pos);
+        } else {
+            return false;
+        }
+    }
+
+    public boolean searchValue(String type, long pos) {
+        return index.get(type).contains(pos);
+    }
 }
