@@ -78,11 +78,10 @@ public class Main {
                             }
                         }
                         break;
-
+                        
                     case 2:
                         // Perform external merge sorting on the data
-                        Order externalSorting = new Order();
-                        externalSorting.sort();
+                        System.out.println("Not implemented yet");
                         break;
 
                     case 3:
