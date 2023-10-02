@@ -23,9 +23,8 @@ public class InvertedList {
         raf.seek(4);
         while (raf.getFilePointer() < raf.length()) {
             long address = raf.getFilePointer();
-            NbaPlayer player = CRUD.readPlayerFromPos(raf);
+            NbaPlayer player = CRUD.readPlayerFromRaf(raf);
             String team = player.getTeam_abbreviation();
-            System.out.println(player);
             insertPlayer(team, address);
         }
     }
@@ -37,7 +36,6 @@ public class InvertedList {
         String team = player.getTeam_abbreviation();
         insertPlayer(team, address);
     }
-
 
     public void insertPlayer(String type, long address) {
         if (!index.containsKey(type)) {
@@ -62,7 +60,6 @@ public class InvertedList {
         return resp;
     }
 
- 
     public boolean searchValue(NbaPlayer player) throws Exception {
         long pos = CRUD.getPosInFile(player.getId());
         if (pos == 0) {
@@ -77,5 +74,30 @@ public class InvertedList {
 
     public boolean searchValue(String type, long pos) {
         return index.get(type).contains(pos);
+    }
+
+    public void printFullList() throws Exception {
+        for (List<Long> longList : index.values()) {
+            for (Long value : longList) {
+                System.out.println(readPlayerFromPos(value));
+            }
+        }
+
+    }
+
+    private NbaPlayer readPlayerFromPos(long pos) throws Exception {
+        RandomAccessFile raf = new RandomAccessFile("././Database/player_db.db", "r");
+        if (pos > raf.length()) {
+            raf.close();
+            return null;
+        }
+        raf.seek(pos);
+        NbaPlayer player = new NbaPlayer();
+        int size = raf.readInt();
+        byte[] array = new byte[size];
+        raf.read(array);
+        player.fromByteArray(array);
+        raf.close();
+        return player;
     }
 }

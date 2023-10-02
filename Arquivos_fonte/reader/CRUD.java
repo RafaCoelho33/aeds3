@@ -150,10 +150,11 @@ public class CRUD {
                     if (player.getId() == i) {
                         return pos;
 
-                    } else {
-                        raf.seek(raf.getFilePointer() + size);
-
                     }
+                } else{
+                    int size = raf.readInt();
+                    raf.seek(raf.getFilePointer() + size);
+
                 }
             }
         } catch (Exception e) {
@@ -165,7 +166,7 @@ public class CRUD {
         return pos;
     }
 
-    public static NbaPlayer readPlayerFromPos(RandomAccessFile raf) throws Exception {
+    public static NbaPlayer readPlayerFromRaf(RandomAccessFile raf) throws Exception {
         if (raf.getFilePointer() < raf.length()) { 
             NbaPlayer player = new NbaPlayer();
             
