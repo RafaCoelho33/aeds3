@@ -11,12 +11,13 @@ public class PlayerReader {
     public PlayerReader() {}
 
     public static void createDatabase() throws Exception {
+        CRUD crud = new CRUD();
         String[] players = readFile();
 
         for (String line : players) {
             try {
                 NbaPlayer player = new NbaPlayer(line);
-                CRUD.create(player);
+                crud.create(player);
 
             } catch (Exception e) {
                 e.printStackTrace();

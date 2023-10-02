@@ -12,6 +12,7 @@ public class InvertedList {
 
     public InvertedList() {
         index = new HashMap<>();
+        
     }
 
     public void createList() throws Exception {

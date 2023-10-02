@@ -23,33 +23,37 @@ public class CRUD {
 
     // --------------- CREATE ---------------
 
-    public static boolean create(NbaPlayer player) throws Exception {
+    public boolean create(NbaPlayer player) throws Exception {
         RandomAccessFile raf = new RandomAccessFile(file_path, "rw");
-        // try( {
-        // id creation
-        raf.seek(0);
-        int lastId = raf.readInt();
-        raf.seek(0);
-        player.setId(lastId + 1);
-        raf.writeInt(player.getId());
-            
-        // writing the new player
-        byte[] array = player.toByteArray();
-        raf.seek(raf.length());
-        raf.writeChar(lapide);
-        raf.writeInt(array.length);
-        raf.write(array);
+        try {
 
-        // } catch (Exception e) {
-        // System.out.println("-> Erro ao criar o registro! -> " + e);
+            // id creation
+            raf.seek(0);
+            int lastId = raf.readInt();
+            raf.seek(0);
+            player.setId(lastId + 1);
+            raf.writeInt(player.getId());
 
-        return false;
+            // writing the new player
+            byte[] array = player.toByteArray();
+            raf.seek(raf.length());
+            raf.writeChar(lapide);
+            raf.writeInt(array.length);
+            raf.write(array);
+
+            return true;
+
+        } catch (Exception e) {
+            System.out.println("-> Erro ao criar o registro! -> " + e);
+
+            return false;
+        }
 
     }
 
     // --------------- READ ---------------
 
-    public static NbaPlayer read(int searchId) throws Exception {
+    public NbaPlayer read(int searchId) throws Exception {
         try (RandomAccessFile raf = new RandomAccessFile(file_path, "rw")) {
             raf.seek(4);
             while (raf.getFilePointer() < raf.length()) {
@@ -84,7 +88,7 @@ public class CRUD {
 
     // --------------- UPDATE ---------------
 
-    public static boolean update(NbaPlayer newPlayer) throws Exception {
+    public boolean update(NbaPlayer newPlayer) throws Exception {
         try (RandomAccessFile raf = new RandomAccessFile(file_path, "rw")) {
             long pos = getFilePointer(newPlayer.getId());
             raf.seek(pos);
@@ -122,7 +126,7 @@ public class CRUD {
     }
 
     // ----------------DELETE-----------------------
-    public static boolean delete(int deleteId) throws Exception {
+    public boolean delete(int deleteId) throws Exception {
         try (RandomAccessFile raf = new RandomAccessFile(file_path, "rw")) {
             long pos = getFilePointer(deleteId);
             raf.seek(pos - 1);

@@ -14,6 +14,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
         // Start parsing data from CSV
         PlayerReader.createDatabase();
+        CRUD crud = new CRUD();
 
         int option = 0; // Initialize the option variable
 
@@ -47,23 +48,24 @@ public class Main {
                                 case 1:
                                     // Create a player object and add it to the database
                                     NbaPlayer player = new NbaPlayer(0, "teste_player", "CHI", "7.0,2.2,9.0", 198);
-                                    CRUD.create(player);
+                                    crud.create(player);
                                     break;
                                 case 2:
                                     // Read a player from the database
                                     System.out.println("Digite um id de jogador");
                                     int id = Integer.parseInt(sc.nextLine());
-                                    player = CRUD.read(id);
+                                    player = crud.read(id);
+                                    System.out.println(player);
                                     
                                     break;
                                 case 3:
                                     // Update a film in the database
                                     player = new NbaPlayer(0, "teste_player123", "PHX", "7.0,2.2,9.0", 198);
-                                    CRUD.update(player);
+                                    crud.update(player);
                                     break;
                                 case 4:
                                     // Delete a film from the database
-                                    CRUD.delete(1);
+                                    crud.delete(1);
                                     break;
                                 case 5:
                                     System.out.println("Exiting CRUD.");
