@@ -9,7 +9,6 @@ public class CRUD {
     private static final char lapideInvalida = '*';
     static private DataOutputStream dos;
 
-    
     public CRUD() {
         try {
             FileOutputStream arq = new FileOutputStream(file_path);
@@ -25,25 +24,25 @@ public class CRUD {
     // --------------- CREATE ---------------
 
     public static boolean create(NbaPlayer player) throws Exception {
+        RandomAccessFile raf = new RandomAccessFile(file_path, "rw");
+        // try( {
+        // id creation
+        raf.seek(0);
+        int lastId = raf.readInt();
+        raf.seek(0);
+        player.setId(lastId + 1);
+        raf.writeInt(player.getId());
+            
+        // writing the new player
+        byte[] array = player.toByteArray();
+        raf.seek(raf.length());
+        raf.writeChar(lapide);
+        raf.writeInt(array.length);
+        raf.write(array);
 
-        try (RandomAccessFile raf = new RandomAccessFile(file_path, "rw")) {
-            // id creation
-            raf.seek(0);
-            int lastId = raf.readInt();
-            raf.seek(0);
-            player.setId(lastId + 1);
-            raf.writeInt(lastId + 1);
+        // } catch (Exception e) {
+        // System.out.println("-> Erro ao criar o registro! -> " + e);
 
-            // writing the new player
-            byte[] array = player.toByteArray();
-            raf.seek(raf.length());
-            raf.writeChar(lapide);
-            raf.writeInt(array.length);
-            raf.write(array);
-
-        } catch (Exception e) {
-            System.out.println("-> Erro ao criar o registro! -> " + e);
-        }
         return false;
 
     }
