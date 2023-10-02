@@ -48,7 +48,7 @@ public class Main {
                                 case 1:
                                     // Create a player object and add it to the database
                                     NbaPlayer player = new NbaPlayer();
-                                    System.out.print("Digite o nome do jogador");
+                                    System.out.println("Digite o nome do jogador");
                                     player.setPlayer_name(sc.nextLine());
                                     System.out.println("Digite o total de pontos do jogador, rebotes e assistencias");
                                     player.setStats(sc.nextLine());
@@ -73,7 +73,9 @@ public class Main {
                                     break;
                                 case 4:
                                     // Delete a film from the database
-                                    crud.delete(1);
+                                    System.out.println("Digite o id a ser deletado:");
+                                    int deleteId = Integer.parseInt(sc.nextLine());
+                                    crud.delete(deleteId);
                                     break;
                                 case 5:
                                     System.out.println("Exiting CRUD.");
@@ -130,7 +132,7 @@ public class Main {
                         break;
 
                     case 5:
-                        // Placeholder for B-Tree operations
+                        System.out.println("Not implemented yet");
                         break;
 
                     case 6:
