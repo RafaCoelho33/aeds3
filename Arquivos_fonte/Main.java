@@ -3,6 +3,10 @@ import java.util.*;
 
 import externalStructures.ExtendableHash.ExtendableHash;
 import externalStructures.invertedList.InvertedList;
+import compression.Huffman.Huffman;
+import compression.LZW.LZW;
+import patternSearch.Boyer.Boyer;
+import patternSearch.KMP.KMP;
 import reader.*;
 import models.*;
 
@@ -11,6 +15,8 @@ public class Main {
     public static void main(String[] args) throws Exception {
         // Start parsing data from CSV
         CRUD crud = new CRUD();
+
+        String dbPath = "./Database/player_db.db";
 
         File file = new File("./Database/player_db.db");
         if (!(file.exists() && file.length() > 100))
@@ -27,7 +33,9 @@ public class Main {
                         "3- Hash\n" +
                         "4- Inverted List\n" +
                         "5- B-Tree\n" +
-                        "6- Exit");
+                        "6- Compression\n" +
+                        "7- Pattern Search\n" +
+                        "8- Exit");
 
                 option = Integer.parseInt(sc.nextLine()); // Read user input as an integer
 
@@ -137,6 +145,76 @@ public class Main {
                         break;
 
                     case 6:
+                        System.out.println(
+                                "1- Huffman\n" +
+                                        "2-LZW\n" +
+                                        "3- Exit");
+                        option = Integer.parseInt(sc.nextLine());
+
+                        switch (option) {
+                            case 1:
+                                Huffman huffman = new Huffman(dbPath);
+                                huffman.compress();
+
+                                System.out.println(
+                                        "1- Decompress" +
+                                                "2- Exit");
+
+                                option = Integer.parseInt(sc.nextLine());
+                                switch (option) {
+                                    case 1:
+                                        huffman.decompress();
+                                        break;
+
+                                    default:
+                                        break;
+                                }
+
+                                break;
+
+                            case 2:
+                                LZW lzw = new LZW(dbPath);
+                                lzw.compress();
+
+                                System.out.println(
+                                        "1- Decode" +
+                                                "2- Exit");
+                                option = Integer.parseInt(sc.nextLine());
+                                switch (option) {
+                                    case 1:
+                                        lzw.decompress();
+                                        break;
+
+                                    default:
+                                        break;
+                                }
+
+                            default:
+                                break;
+                        }
+
+                    case 7:
+                        System.out.println(
+                            "1- KMP" +
+                            "2- BoyerMoore"+
+                            "3- Exit"
+                            );
+                        option = Integer.parseInt(sc.nextLine());
+
+                        switch (option) {
+                            case 1:
+                                KMP kmp = new KMP(null, null)
+                                break;
+
+                            case 2:
+                                
+                                break;
+                        
+                            default:
+                                break;
+                        }
+
+                    case 8:
                         System.out.println("Exiting");
                         System.exit(0); // Exit the program
                         break;

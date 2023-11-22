@@ -10,6 +10,8 @@ public class Huffman {
     private byte[] data;
     private byte[] decompressedBytes;
     private byte[] compressedBytes;
+    private static final String compressedHuffmanFile = "././compression/compressedFiles/huffmanCompressed.db";
+    private static final String decodedHuffmanFile = "././compression/decompressedFiles/huffmanDecompressed.db";
 
     public Huffman(String db_path) throws Exception {
         
@@ -29,7 +31,7 @@ public class Huffman {
 
     }
 
-    public void compress() {
+    public void compress() throws Exception {
         StringBuilder compressedData = new StringBuilder();
         for (byte b : this.data) {
             compressedData.append(huffmanCodes.get(b));
@@ -40,6 +42,13 @@ public class Huffman {
             String byteString = compressedData.substring(i, Math.min(i + 8, compressedData.length()));
             this.compressedBytes[currentIndex++] = (byte) Integer.parseInt(byteString, 2);
         }
+        writeData();
+    }
+
+    private void writeData() throws Exception{       
+        RandomAccessFile raf = new RandomAccessFile(compressedHuffmanFile, "rw");
+        raf.write(this.compressedBytes);
+        raf.close();
     }
 
     public Node createHuffmanTree(Map<Byte, Integer> frequencyMap) {
@@ -78,7 +87,8 @@ public class Huffman {
 
     }
 
-    public void decompress(byte[] compressedData) {
+    public void decompress() throws Exception {
+        byte[] compressedData = this.compressedBytes;
         StringBuilder stringCompressedData = new StringBuilder();
         this.decompressedBytes = new byte[this.data.length + 5];
 
@@ -104,16 +114,9 @@ public class Huffman {
             }
 
         }
-        System.out.println("Successfully Unzip file.");
-    }
+        RandomAccessFile raf = new RandomAccessFile(decodedHuffmanFile, "rw");
+        raf.write(compressedData);
+        raf.close();
 
-    public byte[] getCompressedBytes(){
-        return this.compressedBytes;
-    }
-    public byte[] getDecompressedBytes(){
-        return this.decompressedBytes;
-    }
-    public byte[] getInputData(){
-        return this.data;
     }
 }
