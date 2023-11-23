@@ -157,8 +157,8 @@ public class Main {
                                 huffman.compress();
 
                                 System.out.println(
-                                        "1- Decompress" +
-                                                "2- Exit");
+                                        "1- Decompress\n" +
+                                        "2- Exit");
 
                                 option = Integer.parseInt(sc.nextLine());
                                 switch (option) {
@@ -177,8 +177,8 @@ public class Main {
                                 lzw.compress();
 
                                 System.out.println(
-                                        "1- Decode" +
-                                                "2- Exit");
+                                        "1- Decode\n" +
+                                        "2- Exit");
                                 option = Integer.parseInt(sc.nextLine());
                                 switch (option) {
                                     case 1:
@@ -195,8 +195,8 @@ public class Main {
 
                     case 7:
                         System.out.println(
-                                "1- KMP" +
-                                "2- BoyerMoore" +
+                                "1- KMP\n" +
+                                "2- BoyerMoore\n" +
                                 "3- Exit");
                         option = Integer.parseInt(sc.nextLine());
                         System.out.println("Set the pattern: ");
