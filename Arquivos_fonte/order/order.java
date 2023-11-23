@@ -4,19 +4,19 @@ import java.io.*;
 
 import models.NbaPlayer;
 
-public class Order {
+public class order {
     private int m; // number of registers
     private int n; // number of paths
     private File[] files1 = new File[n];
     private File[] files2 = new File[n];
     private static final String database_path = "./Database/player_db.db";
 
-    public Order() {
+    public order() {
         this.m = 4200;
         this.n = 3;
     }
 
-    public Order(int m, int n) {
+    public order(int m, int n) {
         this.m = m;
         this.n = n;
     }
