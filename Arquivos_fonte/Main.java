@@ -8,7 +8,7 @@ import compression.LZW.LZW;
 import patternSearch.Boyer.Boyer;
 import patternSearch.KMP.KMP;
 import reader.*;
-import models.*;
+import models.NbaPlayer;
 
 public class Main {
 
@@ -195,21 +195,40 @@ public class Main {
 
                     case 7:
                         System.out.println(
-                            "1- KMP" +
-                            "2- BoyerMoore"+
-                            "3- Exit"
-                            );
+                                "1- KMP" +
+                                "2- BoyerMoore" +
+                                "3- Exit");
                         option = Integer.parseInt(sc.nextLine());
+                        System.out.println("Set the pattern: ");
+                        String pattern = sc.nextLine();
+                        byte[] bytePattern = pattern.getBytes();
 
                         switch (option) {
                             case 1:
-                                KMP kmp = new KMP(null, null)
-                                break;
+                                
+                                KMP kmp = new KMP(bytePattern);
+
+                                int[] result = kmp.search();
+                                if (result[1] != -1) {
+                                    System.out.println(
+                                            "Pattern found!\nPosition: " + result[1] + "\n" + result[0]
+                                                    + "comparisons were made.");
+                                } else {
+                                    System.out.println("Pattern not found.");
+                                    break;
+                                }
 
                             case 2:
-                                
-                                break;
-                        
+                                System.out.println("Set the pattern: ");
+                                Boyer boyer = new Boyer(bytePattern);
+
+                                int resultBooyer = boyer.boyerMooreSearch();
+                                if (resultBooyer != -1) {
+                                    System.out.println("Pattern found! Position: " + resultBooyer);
+                                } else {
+                                    System.out.println("Pattern not found");
+                                }
+
                             default:
                                 break;
                         }

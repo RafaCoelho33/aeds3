@@ -1,12 +1,22 @@
 package patternSearch.KMP;
 
+import java.io.RandomAccessFile;
+
 public class KMP{
     private byte[] pattern;
     private byte[] data;
+    private static final String dbPath = "./Database/player_db.db";
 
-    public KMP(byte[] pattern, byte[] data) {
+    public KMP(byte[] pattern) throws Exception {
+
+        RandomAccessFile raf = new RandomAccessFile(dbPath, "rw");
+        byte[] input = new byte[(int)raf.length()];
+        raf.read(input);
+
         this.pattern = pattern;
-        this.data = data;
+        this.data = input;
+
+        raf.close();
     }
 
     public static int[] calculateLPS(byte[] pattern) {
